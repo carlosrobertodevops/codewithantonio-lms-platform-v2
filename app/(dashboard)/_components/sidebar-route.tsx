@@ -30,7 +30,7 @@ const SidebarRoute = ({ icon: Icon, label, href }: SidebarRouteProps) => {
           'text-sky-700 bg-sky-200/20 hover:bg-sky-200/20 hover:text-sky-700',
       )}
     >
-      {label}
+      <div className="flex items-center gap-x-2 py-4">{label}</div>
     </button>
   );
 };
