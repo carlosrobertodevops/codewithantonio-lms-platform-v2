@@ -1,5 +1,9 @@
+import Logo from './logo';
+
 const Sidebar = () => {
-  return <div>This is a sidebar</div>;
+  return (
+    <div className="bg-white border-r overflow-y-auto shadow-sm flex flex-col w-full"></div>
+  );
 };
 
 export default Sidebar;
