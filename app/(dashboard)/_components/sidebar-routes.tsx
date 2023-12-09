@@ -1,3 +1,5 @@
+'use client';
+
 const SidebarRoutes = () => {
   return <div className="flex flex-col"></div>;
 };
