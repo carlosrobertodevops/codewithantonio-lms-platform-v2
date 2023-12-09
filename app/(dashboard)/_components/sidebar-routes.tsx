@@ -16,6 +16,8 @@ const GUEST_ROUTES = [
 ];
 
 const SidebarRoutes = () => {
+  const routes = GUEST_ROUTES;
+
   return <div className="flex flex-col"></div>;
 };
 
