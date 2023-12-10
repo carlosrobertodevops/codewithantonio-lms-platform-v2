@@ -1,5 +1,6 @@
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
+import Sidebar from './sidebar';
 
 const MobileSidebar = () => {
   return (
@@ -7,7 +8,9 @@ const MobileSidebar = () => {
       <SheetTrigger>
         <Menu />
       </SheetTrigger>
-      <SheetContent></SheetContent>
+      <SheetContent>
+        <Sidebar />
+      </SheetContent>
     </Sheet>
   );
 };
