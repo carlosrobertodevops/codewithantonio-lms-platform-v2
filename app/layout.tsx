@@ -1,9 +1,12 @@
-import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 
 import { Inter } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
 
-const font = Inter({ subsets: ['latin'] });
+const font = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata = {
   title: 'Next.js',
@@ -17,8 +20,8 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={font.className}>{children}</body>
+      <html lang="en" className={font.className}>
+        <body>{children}</body>
       </html>
     </ClerkProvider>
   );
