@@ -1,11 +1,11 @@
-import { UserButton } from '@clerk/nextjs';
 import MobileSidebar from './mobile-sidebar';
+import NavbarRoutes from '@/components/navbar-routes';
 
 const Navbar = () => {
   return (
-    <div className="p-4 border-b flex items-center bg-white shadow-sm">
+    <div className="flex items-center border-b bg-white p-4 shadow-sm">
       <MobileSidebar />
-      <UserButton afterSignOutUrl="/" />
+      <NavbarRoutes />
     </div>
   );
 };
