@@ -38,7 +38,7 @@ const SidebarRoutes = () => {
   const routes = isTeacherPage ? TEACHER_ROUTES : GUEST_ROUTES;
 
   return (
-    <div className="flex flex-col">
+    <div className='flex flex-col'>
       {routes.map((route) => (
         <SidebarRoute
           key={route.href}

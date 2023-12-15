@@ -12,11 +12,11 @@ const NavbarRoutes = () => {
   const isCoursePage = pathname?.includes('/chapter');
 
   return (
-    <div className="ml-auto flex items-center gap-x-2">
+    <div className='ml-auto flex items-center gap-x-2'>
       {isTeacherPage || isCoursePage ? (
         <Link href={'/'}>
           <Button size={'sm'} variant={'ghost'}>
-            <LogOut className="mr-2 h-4 w-4" />
+            <LogOut className='mr-2 h-4 w-4' />
             Exit
           </Button>
         </Link>
@@ -27,7 +27,7 @@ const NavbarRoutes = () => {
           </Button>
         </Link>
       )}
-      <UserButton afterSignOutUrl="/" />
+      <UserButton afterSignOutUrl='/' />
     </div>
   );
 };
