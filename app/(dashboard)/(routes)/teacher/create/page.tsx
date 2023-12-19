@@ -22,7 +22,11 @@ const CreatePage = () => {
     console.log(data);
   };
 
-  return <div>This is a create page</div>;
+  return (
+    <div className='mx-auto flex h-full max-w-5xl p-6 md:items-center md:justify-center'>
+      This is a create page
+    </div>
+  );
 };
 
 export default CreatePage;
