@@ -13,9 +13,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
+  title: z.string().trim().min(1, 'Title is required'),
 });
 
 const CreatePage = () => {
@@ -64,6 +66,16 @@ const CreatePage = () => {
                 </FormItem>
               )}
             />
+            <div className='flex items-center gap-x-2'>
+              <Link href={'/teacher/courses'}>
+                <Button type='button' variant={'ghost'}>
+                  Cancel
+                </Button>
+              </Link>
+              <Button type='submit' disabled={!isValid || isSubmitting}>
+                Continue
+              </Button>
+            </div>
           </form>
         </Form>
       </div>
