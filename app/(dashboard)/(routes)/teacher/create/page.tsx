@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import axios from 'axios';
 
 const formSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
@@ -30,8 +31,12 @@ const CreatePage = () => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      const response = await axios.post('/api/courses', data);
+    } catch {
+      console.log('Something went wrong');
+    }
   };
 
   return (
