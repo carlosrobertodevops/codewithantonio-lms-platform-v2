@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
@@ -29,11 +30,14 @@ const CreatePage = () => {
     },
   });
 
+  const router = useRouter();
+
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post('/api/courses', data);
+      router.push(`/teacher/courses/${response.data.id}`);
     } catch {
       console.log('Something went wrong');
     }
