@@ -5,10 +5,12 @@ import Sidebar from './sidebar';
 const MobileSidebar = () => {
   return (
     <Sheet>
-      <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
+      <SheetTrigger
+        className='pr-4 transition hover:opacity-75 md:hidden'
+        aria-controls='radix-:R1mcq:'>
         <Menu />
       </SheetTrigger>
-      <SheetContent side={'left'} className="p-0">
+      <SheetContent side={'left'} className='p-0'>
         <Sidebar />
       </SheetContent>
     </Sheet>
