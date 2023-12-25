@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const formSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
@@ -38,8 +39,9 @@ const CreatePage = () => {
     try {
       const response = await axios.post('/api/courses', data);
       router.push(`/teacher/courses/${response.data.id}`);
+      toast.success('Successfully created!');
     } catch {
-      console.log('Something went wrong');
+      toast.error('Something went wrong');
     }
   };
 

@@ -2,6 +2,7 @@ import './globals.css';
 
 import { Inter } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
+import ToasterProvider from '@/components/providers/toaster-provider';
 
 const font = Inter({
   subsets: ['latin'],
@@ -22,7 +23,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang='en' className={font.className}>
-        <body>{children}</body>
+        <body>
+          <ToasterProvider />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );
