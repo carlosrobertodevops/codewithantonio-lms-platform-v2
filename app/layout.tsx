@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 
 const font = Inter({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '900'],
   display: 'swap',
 });
 
@@ -20,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" className={font.className}>
+      <html lang='en' className={font.className}>
         <body>{children}</body>
       </html>
     </ClerkProvider>
