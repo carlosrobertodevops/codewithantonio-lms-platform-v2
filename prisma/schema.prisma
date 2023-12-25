@@ -32,8 +32,8 @@ model Attachment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  courseId String?
-  Course   Course? @relation(fields: [courseId], references: [id])
+  courseId String
+  Course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@index([courseId])
 }
