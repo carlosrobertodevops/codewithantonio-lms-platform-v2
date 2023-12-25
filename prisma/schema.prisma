@@ -23,6 +23,11 @@ model Course {
   updatedAt   DateTime @updatedAt
 
   attachments Attachment[]
+
+  categoryId String?
+  Category   Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
 }
 
 model Attachment {
@@ -41,4 +46,6 @@ model Attachment {
 model Category {
   id   String @id @default(uuid())
   name String @unique
+
+  courses Course[]
 }
