@@ -25,7 +25,7 @@ model Course {
   attachments Attachment[]
 
   categoryId String?
-  Category   Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@index([categoryId])
 }
@@ -38,7 +38,7 @@ model Attachment {
   updatedAt DateTime @updatedAt
 
   courseId String
-  Course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@index([courseId])
 }
