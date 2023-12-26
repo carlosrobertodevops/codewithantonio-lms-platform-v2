@@ -36,7 +36,9 @@ const CourseIdPage = async ({ params }: CourseIdProps) => {
       <div className='flex items-center justify-between'>
         <div className='flex flex-col gap-y-2'>
           <h1 className='text-2xl font-medium'>Course Setup</h1>
-          <span>Complete all fields {completionText}</span>
+          <span className='text-sm text-slate-700'>
+            Complete all fields {completionText}
+          </span>
         </div>
       </div>
     </div>
