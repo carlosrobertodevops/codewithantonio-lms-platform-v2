@@ -1,4 +1,4 @@
-import { cva } from 'class-variance-authority';
+import { VariantProps, cva } from 'class-variance-authority';
 
 const backgroundVariants = cva(
   'rounded-full flex items-center justify-center',
@@ -36,6 +36,9 @@ const iconVariants = cva('', {
     size: 'default',
   },
 });
+
+type BackgroundVariantsProps = VariantProps<typeof backgroundVariants>;
+type IconVariantsProps = VariantProps<typeof iconVariants>;
 
 const IconBadge = () => {
   return <div>This is an Icon Badge</div>;
