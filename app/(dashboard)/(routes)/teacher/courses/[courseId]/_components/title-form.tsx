@@ -9,9 +9,11 @@ interface TitleFormProps {
   courseId: string;
 }
 
-const titleSchema = z.object({
+const titleFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
 });
+
+type TitleFormSchemaType = z.infer<typeof titleFormSchema>;
 
 const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   return <div>This is a title form</div>;
