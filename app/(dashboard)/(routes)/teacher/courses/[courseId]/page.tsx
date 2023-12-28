@@ -1,5 +1,7 @@
+import IconBadge from '@/components/icon-badge';
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
+import { LayoutDashboard } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
 interface CourseIdProps {
@@ -42,11 +44,14 @@ const CourseIdPage = async ({ params }: CourseIdProps) => {
         </div>
       </div>
       <div className='mt-16 grid grid-cols-1 gap-6 md:grid-cols-2'>
+        {/* Section `Customize your course` starts */}
         <div>
-          <div className='flex items-center justify-between gap-x-2'>
+          <div className='flex items-center gap-x-2'>
+            <IconBadge icon={LayoutDashboard} />
             <h2 className='text-xl'>Customize your course</h2>
           </div>
         </div>
+        {/* Section `Customize your course` ends */}
       </div>
     </div>
   );
