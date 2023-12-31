@@ -1,7 +1,14 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormField, FormItem } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PencilIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -62,7 +69,18 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
             <FormField
               control={form.control}
               name='title'
-              render={({ field }) => <FormItem></FormItem>}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder='e.g. "Advanced web development"'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </form>
         </Form>
