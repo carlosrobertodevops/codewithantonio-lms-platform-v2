@@ -1,6 +1,8 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { PencilIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -12,7 +14,7 @@ interface TitleFormProps {
 }
 
 const titleFormSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
+  title: z.string().trim().min(1, 'Title is required'),
 });
 
 type TitleFormSchemaType = z.infer<typeof titleFormSchema>;
@@ -25,7 +27,22 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   });
 
   const { isValid, isSubmitting } = form.formState;
-  return <div>This is a title form</div>;
+
+  const onSubmit = (values: TitleFormSchemaType) => {
+    console.log(values);
+  };
+
+  return (
+    <div className='mt-6 rounded-md border bg-slate-100 p-4'>
+      <div className='flex items-center justify-between font-medium'>
+        Course title
+        <Button variant={'ghost'}>
+          <PencilIcon className='mr-2 h-4 w-4' />
+          Edit
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default TitleForm;
