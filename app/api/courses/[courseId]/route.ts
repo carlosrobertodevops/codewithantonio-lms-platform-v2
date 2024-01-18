@@ -24,6 +24,8 @@ export async function POST(request: Request, { params }: ContextProps) {
         ...values,
       },
     });
+
+    return NextResponse.json(course);
   } catch (error) {
     console.log('[COURSE_ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
