@@ -6,7 +6,7 @@ interface ContextProps {
   params: { courseId: string };
 }
 
-export async function POST(request: Request, { params }: ContextProps) {
+export async function PATCH(request: Request, { params }: ContextProps) {
   try {
     const { userId } = auth();
     const values = await request.json();
