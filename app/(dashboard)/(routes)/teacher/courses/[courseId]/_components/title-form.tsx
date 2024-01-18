@@ -10,9 +10,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { PencilIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 interface TitleFormProps {
@@ -30,6 +33,7 @@ type TitleFormSchemaType = z.infer<typeof titleFormSchema>;
 
 const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
 
   const form = useForm<TitleFormSchemaType>({
     mode: 'onBlur',
@@ -39,11 +43,18 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 
   const { isValid, isSubmitting } = form.formState;
 
-  const onSubmit = (values: TitleFormSchemaType) => {
-    console.log(values);
-  };
-
   const toggleIsEditing = () => setIsEditing((current) => !current);
+
+  const onSubmit = async (values: TitleFormSchemaType) => {
+    try {
+      await axios.put(`/api/courses/${courseId}`, values);
+      toast.success('Course title updated');
+      toggleIsEditing();
+      router.refresh();
+    } catch {
+      toast.error('Something went wrong');
+    }
+  };
 
   return (
     <div className='mt-6 rounded-md border bg-slate-100 p-4'>
