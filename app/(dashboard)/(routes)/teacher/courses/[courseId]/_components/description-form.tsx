@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Course } from '@prisma/client';
 import axios from 'axios';
 import { PencilIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -18,26 +19,27 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
-interface TitleFormProps {
+interface DescriptionFormProps {
   initialData: {
-    title: string;
+    description: string | null;
   };
   courseId: string;
 }
 
 const titleFormSchema = z.object({
-  title: z.string().trim().min(1, 'Title is required'),
+  description: z.string().trim().min(1, 'Description is required'),
 });
 
 type TitleFormSchemaType = z.infer<typeof titleFormSchema>;
 
-const DescriptionForm = ({ initialData, courseId }: TitleFormProps) => {
+const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
   const form = useForm<TitleFormSchemaType>({
     mode: 'onBlur',
-    defaultValues: initialData,
+    defaultValues: { description: initialData?.description || '' },
+
     resolver: zodResolver(titleFormSchema),
   });
 
@@ -59,7 +61,7 @@ const DescriptionForm = ({ initialData, courseId }: TitleFormProps) => {
   return (
     <div className='mt-6 rounded-md border bg-slate-100 p-4'>
       <div className='flex items-center justify-between font-medium'>
-        Course title
+        Course description
         <Button variant={'ghost'} onClick={toggleIsEditing}>
           {isEditing ? (
             'Cancel'
@@ -71,7 +73,7 @@ const DescriptionForm = ({ initialData, courseId }: TitleFormProps) => {
           )}
         </Button>
       </div>
-      {!isEditing && <p className='mt-2 text-sm'>{initialData.title}</p>}
+      {!isEditing && <p className='mt-2 text-sm'>{initialData.description}</p>}
       {isEditing && (
         <Form {...form}>
           <form
@@ -79,7 +81,7 @@ const DescriptionForm = ({ initialData, courseId }: TitleFormProps) => {
             className='mt-4 space-y-4'>
             <FormField
               control={form.control}
-              name='title'
+              name='description'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
