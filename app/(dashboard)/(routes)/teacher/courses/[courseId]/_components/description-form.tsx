@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Course } from '@prisma/client';
 import axios from 'axios';
@@ -73,7 +74,15 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
           )}
         </Button>
       </div>
-      {!isEditing && <p className='mt-2 text-sm'>{initialData.description}</p>}
+      {!isEditing && (
+        <p
+          className={cn(
+            'mt-2 text-sm',
+            !initialData.description && 'italic text-slate-500',
+          )}>
+          {initialData.description ?? 'No description'}
+        </p>
+      )}
       {isEditing && (
         <Form {...form}>
           <form
