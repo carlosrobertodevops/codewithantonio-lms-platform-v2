@@ -27,28 +27,28 @@ interface DescriptionFormProps {
   courseId: string;
 }
 
-const titleFormSchema = z.object({
+const descriptionFormSchema = z.object({
   description: z.string().trim().min(1, 'Description is required'),
 });
 
-type TitleFormSchemaType = z.infer<typeof titleFormSchema>;
+type DescriptionFormSchemaType = z.infer<typeof descriptionFormSchema>;
 
 const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
-  const form = useForm<TitleFormSchemaType>({
+  const form = useForm<DescriptionFormSchemaType>({
     mode: 'onBlur',
     defaultValues: { description: initialData?.description || '' },
 
-    resolver: zodResolver(titleFormSchema),
+    resolver: zodResolver(descriptionFormSchema),
   });
 
   const { isValid, isSubmitting } = form.formState;
 
   const toggleIsEditing = () => setIsEditing((current) => !current);
 
-  const onSubmit = async (values: TitleFormSchemaType) => {
+  const onSubmit = async (values: DescriptionFormSchemaType) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
       toast.success('Course title updated');
