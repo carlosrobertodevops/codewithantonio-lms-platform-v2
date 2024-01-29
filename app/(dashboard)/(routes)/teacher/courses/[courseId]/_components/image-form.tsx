@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Course } from '@prisma/client';
 import axios from 'axios';
 import { ImageIcon, PencilIcon, PlusCircle } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -83,6 +84,17 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
       {!isEditing && !initialData.imageUrl && (
         <div className='flex h-60 items-center justify-center rounded-md bg-slate-200'>
           <ImageIcon className='h-10 w-10 text-slate-500' />
+        </div>
+      )}
+
+      {!isEditing && initialData.imageUrl && (
+        <div className='relative mt-2 aspect-video'>
+          <Image
+            className='object-cover'
+            alt='Course image'
+            src={initialData.imageUrl}
+            fill
+          />
         </div>
       )}
       {isEditing && <></>}
