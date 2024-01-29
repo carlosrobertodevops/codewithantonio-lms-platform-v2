@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Course } from '@prisma/client';
 import axios from 'axios';
-import { PencilIcon } from 'lucide-react';
+import { PencilIcon, PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -63,12 +63,19 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
       <div className='flex items-center justify-between font-medium'>
         Course image
         <Button variant={'ghost'} onClick={toggleIsEditing}>
-          {isEditing ? (
-            'Cancel'
-          ) : (
+          {isEditing && <>Cancel</>}
+
+          {!isEditing && initialData.imageUrl && (
             <>
               <PencilIcon className='mr-2 h-4 w-4' />
               Edit
+            </>
+          )}
+
+          {!isEditing && !initialData.imageUrl && (
+            <>
+              <PlusCircle className='mr-2 h-4 w-4' />
+              Add
             </>
           )}
         </Button>
