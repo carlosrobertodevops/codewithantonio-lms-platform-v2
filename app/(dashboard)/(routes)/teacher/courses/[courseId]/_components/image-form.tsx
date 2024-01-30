@@ -1,5 +1,6 @@
 'use client';
 
+import FileUpload from '@/components/file-upload';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -28,27 +29,13 @@ interface ImageFormProps {
   courseId: string;
 }
 
-const imageFormSchema = z.object({
-  imageUrl: z.string().trim().min(1, 'Image is required'),
-});
-
-type ImageFormSchemaType = z.infer<typeof imageFormSchema>;
-
 const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
-  const form = useForm<ImageFormSchemaType>({
-    mode: 'onBlur',
-    defaultValues: { imageUrl: initialData?.imageUrl ?? '' },
-    resolver: zodResolver(imageFormSchema),
-  });
-
-  const { isValid, isSubmitting } = form.formState;
-
   const toggleIsEditing = () => setIsEditing((current) => !current);
 
-  const onSubmit = async (values: ImageFormSchemaType) => {
+  const onSubmit = async (values: { imageUrl: string }) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
       toast.success('Course title updated');
@@ -97,7 +84,21 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
           />
         </div>
       )}
-      {isEditing && <></>}
+      {isEditing && (
+        <>
+          <FileUpload
+            endpoint='courseImage'
+            onChange={(url) => {
+              if (url) {
+                onSubmit({ imageUrl: url });
+              }
+            }}
+          />
+          <p className='mt-4 text-center text-xs text-muted-foreground'>
+            16:9 aspect ratio recommended
+          </p>
+        </>
+      )}
     </div>
   );
 };
