@@ -20,11 +20,12 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
-interface DescriptionFormProps {
+interface CategoryFormProps {
   initialData: {
-    description: string | null;
+    categoryId: string | null;
   };
   courseId: string;
+  categories: { name: string; id: string }[];
 }
 
 const descriptionFormSchema = z.object({
@@ -33,7 +34,7 @@ const descriptionFormSchema = z.object({
 
 type DescriptionFormSchemaType = z.infer<typeof descriptionFormSchema>;
 
-const CategoryForm = ({ initialData, courseId }: DescriptionFormProps) => {
+const CategoryForm = ({ initialData, courseId }: CategoryFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
