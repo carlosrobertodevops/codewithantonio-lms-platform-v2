@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Combobox } from '@/components/ui/combobox';
 import {
   Form,
   FormControl,
@@ -101,7 +102,16 @@ const CategoryForm = ({
               name='categoryId'
               render={({ field }) => (
                 <FormItem>
-                  <FormControl></FormControl>
+                  <FormControl>
+                    <Combobox
+                      options={categories.map((categorie) => ({
+                        label: categorie.name,
+                        value: categorie.id,
+                      }))}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
