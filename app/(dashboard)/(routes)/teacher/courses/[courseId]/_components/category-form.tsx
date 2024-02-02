@@ -11,7 +11,6 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Course } from '@prisma/client';
 import axios from 'axios';
 import { PencilIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -28,31 +27,35 @@ interface CategoryFormProps {
   categories: { name: string; id: string }[];
 }
 
-const descriptionFormSchema = z.object({
-  description: z.string().trim().min(1, 'Description is required'),
+const categoryFormSchema = z.object({
+  categoryId: z.string().trim().min(1, 'Category is required'),
 });
 
-type DescriptionFormSchemaType = z.infer<typeof descriptionFormSchema>;
+type CategoryFormSchemaType = z.infer<typeof categoryFormSchema>;
 
-const CategoryForm = ({ initialData, courseId }: CategoryFormProps) => {
+const CategoryForm = ({
+  initialData,
+  courseId,
+  categories,
+}: CategoryFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
-  const form = useForm<DescriptionFormSchemaType>({
+  const form = useForm<CategoryFormSchemaType>({
     mode: 'onBlur',
-    defaultValues: { description: initialData?.description || '' },
+    defaultValues: { categoryId: initialData?.categoryId || '' },
 
-    resolver: zodResolver(descriptionFormSchema),
+    resolver: zodResolver(categoryFormSchema),
   });
 
   const { isValid, isSubmitting } = form.formState;
 
   const toggleIsEditing = () => setIsEditing((current) => !current);
 
-  const onSubmit = async (values: DescriptionFormSchemaType) => {
+  const onSubmit = async (values: CategoryFormSchemaType) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success('Course title updated');
+      toast.success('Course updated');
       toggleIsEditing();
       router.refresh();
     } catch {
@@ -60,10 +63,14 @@ const CategoryForm = ({ initialData, courseId }: CategoryFormProps) => {
     }
   };
 
+  const selectedCategory = categories.find(
+    (category) => category.id === initialData.categoryId,
+  )?.name;
+
   return (
     <div className='mt-6 rounded-md border bg-slate-100 p-4'>
       <div className='flex items-center justify-between font-medium'>
-        Course description
+        Course category
         <Button variant={'ghost'} onClick={toggleIsEditing}>
           {isEditing ? (
             'Cancel'
@@ -79,9 +86,9 @@ const CategoryForm = ({ initialData, courseId }: CategoryFormProps) => {
         <p
           className={cn(
             'mt-2 text-sm',
-            !initialData.description && 'italic text-slate-500',
+            !initialData.categoryId && 'italic text-slate-500',
           )}>
-          {initialData.description ?? 'No description'}
+          {selectedCategory ?? 'No description'}
         </p>
       )}
       {isEditing && (
@@ -91,16 +98,10 @@ const CategoryForm = ({ initialData, courseId }: CategoryFormProps) => {
             className='mt-4 space-y-4'>
             <FormField
               control={form.control}
-              name='description'
+              name='categoryId'
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder='e.g. This course is about... '
-                      {...field}
-                    />
-                  </FormControl>
+                  <FormControl></FormControl>
                   <FormMessage />
                 </FormItem>
               )}
