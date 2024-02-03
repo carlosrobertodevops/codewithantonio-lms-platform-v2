@@ -8,6 +8,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,36 +20,36 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
-interface DescriptionFormProps {
+interface PriceFormProps {
   initialData: {
-    description: string | null;
+    price: number | null;
   };
   courseId: string;
 }
 
-const descriptionFormSchema = z.object({
-  description: z.string().trim().min(1, 'Description is required'),
+const priceFormSchema = z.object({
+  price: z.coerce.number().positive(),
 });
 
-type DescriptionFormSchemaType = z.infer<typeof descriptionFormSchema>;
+type PriceFormSchemaType = z.infer<typeof priceFormSchema>;
 
-const PriceForm = ({ initialData, courseId }: DescriptionFormProps) => {
+const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
-  const form = useForm<DescriptionFormSchemaType>({
+  const form = useForm<PriceFormSchemaType>({
     mode: 'onBlur',
-    defaultValues: { description: initialData?.description || '' },
-
-    resolver: zodResolver(descriptionFormSchema),
+    defaultValues: { price: initialData?.price || 0 },
+    resolver: zodResolver(priceFormSchema),
   });
 
   const { isValid, isSubmitting } = form.formState;
 
   const toggleIsEditing = () => setIsEditing((current) => !current);
 
-  const onSubmit = async (values: DescriptionFormSchemaType) => {
+  const onSubmit = async (values: PriceFormSchemaType) => {
     try {
+      console.log({ values });
       await axios.patch(`/api/courses/${courseId}`, values);
       toast.success('Course title updated');
       toggleIsEditing();
@@ -61,7 +62,7 @@ const PriceForm = ({ initialData, courseId }: DescriptionFormProps) => {
   return (
     <div className='mt-6 rounded-md border bg-slate-100 p-4'>
       <div className='flex items-center justify-between font-medium'>
-        Course description
+        Course Price
         <Button variant={'ghost'} onClick={toggleIsEditing}>
           {isEditing ? (
             'Cancel'
@@ -77,9 +78,9 @@ const PriceForm = ({ initialData, courseId }: DescriptionFormProps) => {
         <p
           className={cn(
             'mt-2 text-sm',
-            !initialData.description && 'italic text-slate-500',
+            !initialData.price && 'italic text-slate-500',
           )}>
-          {initialData.description ?? 'No description'}
+          {initialData.price ?? 'No price'}
         </p>
       )}
       {isEditing && (
@@ -89,13 +90,16 @@ const PriceForm = ({ initialData, courseId }: DescriptionFormProps) => {
             className='mt-4 space-y-4'>
             <FormField
               control={form.control}
-              name='description'
+              name='price'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <Input
                       disabled={isSubmitting}
-                      placeholder='e.g. This course is about... '
+                      type='number'
+                      step={0.01}
+                      min={0}
+                      placeholder='Set a price for your course'
                       {...field}
                     />
                   </FormControl>
