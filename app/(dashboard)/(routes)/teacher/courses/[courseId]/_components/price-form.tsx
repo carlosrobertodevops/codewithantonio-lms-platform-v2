@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { formatPrice } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -80,7 +81,7 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
             'mt-2 text-sm',
             !initialData.price && 'italic text-slate-500',
           )}>
-          {initialData.price ?? 'No price'}
+          {initialData.price ? formatPrice(initialData.price) : 'No price'}
         </p>
       )}
       {isEditing && (
