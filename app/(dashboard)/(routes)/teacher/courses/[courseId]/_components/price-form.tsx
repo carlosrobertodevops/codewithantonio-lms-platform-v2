@@ -29,7 +29,12 @@ interface PriceFormProps {
 }
 
 const priceFormSchema = z.object({
-  price: z.coerce.number().positive(),
+  price: z.preprocess(
+    (a) => parseInt(a as string, 10),
+    z
+      .number({ invalid_type_error: 'Expected number' })
+      .nonnegative('Number must be equal or greater then 0'),
+  ),
 });
 
 type PriceFormSchemaType = z.infer<typeof priceFormSchema>;
@@ -39,7 +44,7 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
   const router = useRouter();
 
   const form = useForm<PriceFormSchemaType>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: { price: initialData?.price || 0 },
     resolver: zodResolver(priceFormSchema),
   });
@@ -79,9 +84,11 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
         <p
           className={cn(
             'mt-2 text-sm',
-            !initialData.price && 'italic text-slate-500',
+            initialData.price ?? 'italic text-slate-500',
           )}>
-          {initialData.price ? formatPrice(initialData.price) : 'No price'}
+          {initialData.price !== null
+            ? formatPrice(initialData.price)
+            : 'No price'}
         </p>
       )}
       {isEditing && (
