@@ -25,8 +25,8 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
 
   const onSubmit = async (values: { url: string }) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success('Course title updated');
+      await axios.post(`/api/courses/${courseId}/attachments`, values);
+      toast.success('Course updated');
       toggleIsEditing();
       router.refresh();
     } catch {
