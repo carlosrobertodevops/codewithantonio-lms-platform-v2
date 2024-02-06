@@ -2,25 +2,15 @@
 
 import FileUpload from '@/components/file-upload';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
+
 import { Attachment, Course } from '@prisma/client';
 import axios from 'axios';
-import { ImageIcon, PencilIcon, PlusCircle } from 'lucide-react';
-import Image from 'next/image';
+import { PlusCircle } from 'lucide-react';
+
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+
 import toast from 'react-hot-toast';
-import { z } from 'zod';
 
 interface AttachmentFormProps {
   initialData: Course & { attachments: Attachment[] };
@@ -33,7 +23,7 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
 
   const toggleIsEditing = () => setIsEditing((current) => !current);
 
-  const onSubmit = async (values: { imageUrl: string }) => {
+  const onSubmit = async (values: { url: string }) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
       toast.success('Course title updated');
@@ -47,53 +37,27 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
   return (
     <div className='mt-6 rounded-md border bg-slate-100 p-4'>
       <div className='flex items-center justify-between font-medium'>
-        Course image
+        Course attachments
         <Button variant={'ghost'} onClick={toggleIsEditing}>
           {isEditing && <>Cancel</>}
 
-          {!isEditing && initialData.imageUrl && (
-            <>
-              <PencilIcon className='mr-2 h-4 w-4' />
-              Edit
-            </>
-          )}
-
-          {!isEditing && !initialData.imageUrl && (
+          {!isEditing && (
             <>
               <PlusCircle className='mr-2 h-4 w-4' />
-              Add
+              Add a file
             </>
           )}
         </Button>
       </div>
-      {!isEditing && !initialData.imageUrl && (
-        <div className='flex h-60 items-center justify-center rounded-md bg-slate-200'>
-          <ImageIcon className='h-10 w-10 text-slate-500' />
-        </div>
-      )}
 
-      {!isEditing && initialData.imageUrl && (
-        <div className='relative mt-2 aspect-video'>
-          <Image
-            className='object-cover'
-            alt='Course image'
-            src={initialData.imageUrl}
-            fill
-          />
-        </div>
-      )}
       {isEditing && (
         <>
           <FileUpload
-            endpoint='courseImage'
-            onChange={(url) => {
-              if (url) {
-                onSubmit({ imageUrl: url });
-              }
-            }}
+            endpoint='courseAttachment'
+            onChange={(url) => onSubmit({ url })}
           />
           <p className='mt-4 text-center text-xs text-muted-foreground'>
-            16:9 aspect ratio recommended
+            Add anything your students might need to complete the course.
           </p>
         </>
       )}
