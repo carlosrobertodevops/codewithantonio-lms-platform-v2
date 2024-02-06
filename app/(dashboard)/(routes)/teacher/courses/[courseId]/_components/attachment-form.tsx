@@ -12,7 +12,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Course } from '@prisma/client';
+import { Attachment, Course } from '@prisma/client';
 import axios from 'axios';
 import { ImageIcon, PencilIcon, PlusCircle } from 'lucide-react';
 import Image from 'next/image';
@@ -22,14 +22,12 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
-interface ImageFormProps {
-  initialData: {
-    imageUrl: string | null;
-  };
+interface AttachmentFormProps {
+  initialData: Course & { attachments: Attachment[] };
   courseId: string;
 }
 
-const AttachmentForm = ({ initialData, courseId }: ImageFormProps) => {
+const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
