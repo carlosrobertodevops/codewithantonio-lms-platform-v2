@@ -9,6 +9,7 @@ import { File, Loader2, PlusCircle, X } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { set } from 'react-hook-form';
 
 import toast from 'react-hot-toast';
 
@@ -32,6 +33,19 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
       router.refresh();
     } catch {
       toast.error('Something went wrong');
+    }
+  };
+
+  const onDelete = async (id: string) => {
+    try {
+      setDeletingId(id);
+      await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
+      toast.success('Attachment deleted');
+      router.refresh();
+    } catch {
+      toast.error('Something went wrong');
+    } finally {
+      setDeletingId('');
     }
   };
 
@@ -79,7 +93,9 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
               {deletingId === attachment.id ? (
                 <Loader2 className='ml-2 h-4 w-4 animate-spin' />
               ) : (
-                <button className='ml-auto transition hover:opacity-75'>
+                <button
+                  onClick={() => onDelete(attachment.id)}
+                  className='ml-auto transition hover:opacity-75'>
                   <X className='ml-2 h-4 w-4' />
                 </button>
               )}
