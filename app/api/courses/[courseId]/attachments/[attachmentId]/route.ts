@@ -26,11 +26,13 @@ export async function DELETE(request: NextRequest, { params }: ContextProps) {
     }
 
     const attachment = await db.attachment.delete({
-      data: {
+      where: {
         courseId: params.courseId,
-        attachmentId: params.attachmentId,
+        id: params.attachmentId,
       },
     });
+
+    return NextResponse.json(attachment);
   } catch (error) {
     console.log('[ATTACHMENTS_ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
