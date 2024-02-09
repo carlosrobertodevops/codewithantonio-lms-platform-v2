@@ -1,3 +1,4 @@
+import { utapi } from '@/app/api/uploadthing/route';
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
@@ -32,7 +33,9 @@ export async function DELETE(request: NextRequest, { params }: ContextProps) {
       },
     });
 
-    return NextResponse.json(attachment);
+    await utapi.deleteFiles(attachment.name);
+
+    return NextResponse.json({ attachment });
   } catch (error) {
     console.log('[ATTACHMENTS_ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
