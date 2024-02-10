@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Combobox } from '@/components/ui/combobox';
 import {
   Form,
   FormControl,
@@ -9,7 +8,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -20,43 +19,38 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
-interface CategoryFormProps {
+interface DescriptionFormProps {
   initialData: {
-    categoryId: string | null;
+    description: string | null;
   };
   courseId: string;
-  categories: { name: string; id: string }[];
 }
 
-const categoryFormSchema = z.object({
-  categoryId: z.string().trim().min(1, 'Category is required'),
+const descriptionFormSchema = z.object({
+  description: z.string().trim().min(1, 'Description is required'),
 });
 
-type CategoryFormSchemaType = z.infer<typeof categoryFormSchema>;
+type DescriptionFormSchemaType = z.infer<typeof descriptionFormSchema>;
 
-const CategoryForm = ({
-  initialData,
-  courseId,
-  categories,
-}: CategoryFormProps) => {
+const ChaptersForm = ({ initialData, courseId }: DescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
-  const form = useForm<CategoryFormSchemaType>({
+  const form = useForm<DescriptionFormSchemaType>({
     mode: 'onBlur',
-    defaultValues: { categoryId: initialData?.categoryId || '' },
+    defaultValues: { description: initialData?.description || '' },
 
-    resolver: zodResolver(categoryFormSchema),
+    resolver: zodResolver(descriptionFormSchema),
   });
 
   const { isValid, isSubmitting } = form.formState;
 
   const toggleIsEditing = () => setIsEditing((current) => !current);
 
-  const onSubmit = async (values: CategoryFormSchemaType) => {
+  const onSubmit = async (values: DescriptionFormSchemaType) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success('Course updated');
+      toast.success('Course title updated');
       toggleIsEditing();
       router.refresh();
     } catch {
@@ -64,14 +58,10 @@ const CategoryForm = ({
     }
   };
 
-  const selectedCategory = categories.find(
-    (category) => category.id === initialData.categoryId,
-  )?.name;
-
   return (
     <div className='mt-6 rounded-md border bg-slate-100 p-4'>
       <div className='flex items-center justify-between font-medium'>
-        Course category
+        Course description
         <Button variant={'ghost'} onClick={toggleIsEditing}>
           {isEditing ? (
             'Cancel'
@@ -87,9 +77,9 @@ const CategoryForm = ({
         <p
           className={cn(
             'mt-2 text-sm',
-            !initialData.categoryId && 'italic text-slate-500',
+            !initialData.description && 'italic text-slate-500',
           )}>
-          {selectedCategory ?? 'No description'}
+          {initialData.description ?? 'No description'}
         </p>
       )}
       {isEditing && (
@@ -99,17 +89,14 @@ const CategoryForm = ({
             className='mt-4 space-y-4'>
             <FormField
               control={form.control}
-              name='categoryId'
+              name='description'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Combobox
-                      options={categories.map((categorie) => ({
-                        label: categorie.name,
-                        value: categorie.id,
-                      }))}
-                      value={field.value}
-                      onChange={field.onChange}
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder='e.g. This course is about... '
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -128,4 +115,4 @@ const CategoryForm = ({
   );
 };
 
-export default CategoryForm;
+export default ChaptersForm;

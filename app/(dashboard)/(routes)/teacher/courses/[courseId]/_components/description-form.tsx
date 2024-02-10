@@ -11,7 +11,6 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Course } from '@prisma/client';
 import axios from 'axios';
 import { PencilIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
