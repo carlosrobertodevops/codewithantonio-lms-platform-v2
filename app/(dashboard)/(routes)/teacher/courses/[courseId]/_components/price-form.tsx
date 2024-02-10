@@ -29,7 +29,7 @@ interface PriceFormProps {
 
 const priceFormSchema = z.object({
   price: z.preprocess(
-    (a) => parseInt(a as string, 10),
+    (a) => parseFloat(a as string),
     z
       .number({ invalid_type_error: 'Expected number' })
       .nonnegative('Number must be equal or greater then 0'),
