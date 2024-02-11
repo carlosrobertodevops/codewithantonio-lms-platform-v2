@@ -33,25 +33,27 @@ const CourseIdPage = async ({ params }: CourseIdProps) => {
       chapters: { orderBy: { position: 'asc' } },
     },
   });
-  const categories = await db.category.findMany({
-    orderBy: { name: 'asc' },
-  });
 
   if (!course || course.userId !== userId) {
     return redirect('/');
   }
 
+  const categories = await db.category.findMany({
+    orderBy: { name: 'asc' },
+  });
+
   const requiredFields = [
     course.title,
     course.description,
     course.imageUrl,
-    course.price,
     course.categoryId,
+    course.chapters.some((chapter) => chapter.isPublished),
+    course.price !== null,
   ];
 
   const totalFields = requiredFields.length;
-  const completedFields = requiredFields.filter(
-    (field) => Boolean(field) || field === 0,
+  const completedFields = requiredFields.filter((field) =>
+    Boolean(field),
   ).length;
 
   const completionText = `(${completedFields}/${totalFields})`;
