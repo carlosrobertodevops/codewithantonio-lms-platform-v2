@@ -72,15 +72,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
           )}
         </Button>
       </div>
-      {!isCreating && (
-        <p
-          className={cn(
-            'mt-2 text-sm',
-            !initialData.description && 'italic text-slate-500',
-          )}>
-          {initialData.description ?? 'No description'}
-        </p>
-      )}
+
       {isCreating && (
         <Form {...form}>
           <form
