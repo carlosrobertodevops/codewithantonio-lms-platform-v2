@@ -37,7 +37,7 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 
   const form = useForm<TitleFormSchemaType>({
     mode: 'onBlur',
-    defaultValues: initialData,
+    defaultValues: { title: initialData?.title || '' },
     resolver: zodResolver(titleFormSchema),
   });
 
