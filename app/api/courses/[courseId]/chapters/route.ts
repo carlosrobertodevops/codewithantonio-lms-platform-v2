@@ -32,7 +32,7 @@ export async function POST(request: NextRequest, { params }: ContextProps) {
 
     const newPosition = lastChapter ? lastChapter.position + 1 : 1;
 
-    const chapter = db.chapter.create({
+    const chapter = await db.chapter.create({
       data: {
         title: chapterTitle,
         position: newPosition,
