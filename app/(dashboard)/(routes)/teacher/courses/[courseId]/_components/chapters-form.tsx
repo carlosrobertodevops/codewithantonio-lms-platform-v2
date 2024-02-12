@@ -48,7 +48,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
   const onSubmit = async (values: ChaptersFormSchemaType) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      await axios.post(`/api/courses/${courseId}/chapters`, values);
       toast.success('Chapter created');
       toggleIsCreating();
       router.refresh();
