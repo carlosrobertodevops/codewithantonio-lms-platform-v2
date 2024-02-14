@@ -52,6 +52,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
       await axios.post(`/api/courses/${courseId}/chapters`, values);
       toast.success('Chapter created');
       toggleIsCreating();
+      form.reset();
       router.refresh();
     } catch {
       toast.error('Something went wrong');
@@ -104,10 +105,15 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         </Form>
       )}
 
-      {!isCreating && !initialData.chapters.length ? (
-        <p className='mt-2 text-sm italic text-slate-500'>No chapters</p>
-      ) : (
-        <ChaptersList items={initialData.chapters} />
+      {!isCreating && (
+        <>
+          {initialData.chapters.length === 0 && (
+            <p className='mt-2 text-sm italic text-slate-500'>No chapters</p>
+          )}
+          {initialData.chapters.length > 0 && (
+            <ChaptersList items={initialData.chapters} />
+          )}
+        </>
       )}
     </div>
   );
