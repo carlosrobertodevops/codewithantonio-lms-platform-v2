@@ -19,6 +19,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
+import ChaptersList from './chapters-list';
 
 interface ChaptersFormProps {
   initialData: Course & { chapters: Chapter[] };
@@ -106,7 +107,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
       {!isCreating && !initialData.chapters.length ? (
         <p className='mt-2 text-sm italic text-slate-500'>No chapters</p>
       ) : (
-        <></>
+        <ChaptersList items={initialData.chapters} />
       )}
     </div>
   );
