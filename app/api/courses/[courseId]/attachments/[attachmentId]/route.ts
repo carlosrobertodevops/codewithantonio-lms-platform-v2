@@ -1,7 +1,7 @@
-import { utapi } from '@/app/api/uploadthing/route';
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
+import { UTApi } from 'uploadthing/server';
 
 interface ContextProps {
   params: {
@@ -12,6 +12,7 @@ interface ContextProps {
 
 export async function DELETE(request: NextRequest, { params }: ContextProps) {
   try {
+    const utapi = new UTApi();
     const { userId } = auth();
 
     if (!userId) {
