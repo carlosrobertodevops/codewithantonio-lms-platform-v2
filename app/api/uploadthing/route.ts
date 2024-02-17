@@ -7,4 +7,4 @@ export const { GET, POST } = createRouteHandler({
   router: ourFileRouter,
 });
 
-export const utapi = new UTApi();
+// export const utapi = new UTApi();
