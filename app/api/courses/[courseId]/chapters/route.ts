@@ -43,5 +43,6 @@ export async function POST(request: NextRequest, { params }: ContextProps) {
     return NextResponse.json(chapter);
   } catch (error) {
     console.log('[CHAPTERS]', error);
+    return new NextResponse('Internal Error', { status: 500 });
   }
 }
