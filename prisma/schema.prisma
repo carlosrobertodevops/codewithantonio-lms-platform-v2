@@ -67,7 +67,7 @@ model Chapter {
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   muxData      MuxData?
-  UserProgress UserProgress[]
+  userProgress UserProgress[]
 
   @@index([courseId])
 }

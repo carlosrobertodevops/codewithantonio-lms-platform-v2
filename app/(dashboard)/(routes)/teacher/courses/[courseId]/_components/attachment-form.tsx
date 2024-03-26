@@ -24,7 +24,7 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
   const onSubmit = async (values: { url: string }) => {
     try {
       await axios.post(`/api/courses/${courseId}/attachments`, values);
-      toast.success('Course updated');
+      toast.success('Course is updated');
       toggleIsEditing();
       router.refresh();
     } catch {
@@ -37,7 +37,7 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
       setDeletingId(id);
       await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
 
-      toast.success('Attachment deleted');
+      toast.success('Attachment is deleted');
       router.refresh();
     } catch {
       toast.error('Something went wrong');

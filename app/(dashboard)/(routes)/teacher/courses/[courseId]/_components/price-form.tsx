@@ -56,7 +56,7 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
     try {
       console.log({ values });
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success('Course title updated');
+      toast.success('Course is updated');
       toggleIsEditing();
       router.refresh();
     } catch {
