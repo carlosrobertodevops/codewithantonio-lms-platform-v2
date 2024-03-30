@@ -9,11 +9,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, Course } from '@prisma/client';
 import axios from 'axios';
-import { PlusCircle } from 'lucide-react';
+import { Loader2, PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -34,12 +33,12 @@ type ChaptersFormSchemaType = z.infer<typeof chaptersFormSchema>;
 
 const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   const [isCreating, setIsCreating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
 
   const form = useForm<ChaptersFormSchemaType>({
     mode: 'onBlur',
     defaultValues: { chapterTitle: '' },
-
     resolver: zodResolver(chaptersFormSchema),
   });
 
@@ -50,7 +49,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   const onSubmit = async (values: ChaptersFormSchemaType) => {
     try {
       await axios.post(`/api/courses/${courseId}/chapters`, values);
-      toast.success('Chapter created');
+      toast.success('Chapter is created');
       toggleIsCreating();
       form.reset();
       router.refresh();
@@ -59,8 +58,34 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     }
   };
 
+  const handleOnReorder = async (
+    updatedOrder: { id: string; position: number }[],
+  ) => {
+    try {
+      setIsUpdating(true);
+      await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
+        list: updatedOrder,
+      });
+      toast.success('Order is changed');
+      router.refresh();
+    } catch {
+      toast.error('Something went wrong');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleOnEdit = (id: string) => {
+    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+  };
+
   return (
-    <div className='mt-6 rounded-md border bg-slate-100 p-4'>
+    <div className='relative mt-6 rounded-md border bg-slate-100 p-4'>
+      {isUpdating && (
+        <div className='absolute right-0 top-0 flex h-full w-full items-center justify-center rounded-md bg-slate-500/20'>
+          <Loader2 className='h-6 w-6 animate-spin text-sky-700' />
+        </div>
+      )}
       <div className='flex items-center justify-between font-medium'>
         Course Chapters
         <Button variant={'ghost'} onClick={toggleIsCreating}>
@@ -110,9 +135,17 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
           {initialData.chapters.length === 0 && (
             <p className='mt-2 text-sm italic text-slate-500'>No chapters</p>
           )}
-          {initialData.chapters.length > 0 && (
-            <ChaptersList items={initialData.chapters} />
+          {initialData.chapters.length !== 0 && (
+            <ChaptersList
+              items={initialData.chapters}
+              isUpdating={isUpdating}
+              onEdit={handleOnEdit}
+              onReorder={handleOnReorder}
+            />
           )}
+          <p className='mt-4 text-center text-xs text-muted-foreground'>
+            Drag and drop to reorder the chapters
+          </p>
         </>
       )}
     </div>
