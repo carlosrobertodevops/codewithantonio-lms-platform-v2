@@ -28,6 +28,8 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
     return redirect('/');
   }
 
+  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
+
   return <div>This is a Chapter Id Page</div>;
 };
 
