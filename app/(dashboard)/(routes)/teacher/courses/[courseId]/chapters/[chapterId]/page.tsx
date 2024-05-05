@@ -54,6 +54,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             Complete all fields {completionText}
           </span>
         </div>
+        <div className='mt-16 grid grid-cols-1 gap-6 md:grid-cols-2'></div>
       </div>
     </div>
   );
