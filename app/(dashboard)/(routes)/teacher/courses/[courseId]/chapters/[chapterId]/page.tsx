@@ -1,5 +1,6 @@
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 interface ChapterIdPageProps {
   params: {
@@ -19,8 +20,13 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
     },
     include: {
       muxData: true,
+      course: true,
     },
   });
+
+  if (!chapter || chapter.course.userId !== userId) {
+    return redirect('/');
+  }
 
   return <div>This is a Chapter Id Page</div>;
 };
