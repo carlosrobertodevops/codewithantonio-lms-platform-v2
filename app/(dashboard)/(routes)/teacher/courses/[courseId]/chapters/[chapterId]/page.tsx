@@ -1,6 +1,7 @@
+import IconBadge from '@/components/icon-badge';
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -54,7 +55,9 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             Complete all fields {completionText}
           </span>
         </div>
-        <div className='mt-16 grid grid-cols-1 gap-6 md:grid-cols-2'></div>
+        <div className='mt-16 grid grid-cols-1 gap-6 md:grid-cols-2'>
+          <div className='space-y-4'></div>
+        </div>
       </div>
     </div>
   );
