@@ -16,13 +16,13 @@ import PriceForm from './_components/price-form';
 import AttachmentForm from './_components/attachment-form';
 import ChaptersForm from './_components/chapters-form';
 
-interface CourseIdProps {
+interface CourseIdPageProps {
   params: {
     courseId: string;
   };
 }
 
-const CourseIdPage = async ({ params }: CourseIdProps) => {
+const CourseIdPage = async ({ params }: CourseIdPageProps) => {
   const { courseId } = params;
   const { userId } = auth();
 
