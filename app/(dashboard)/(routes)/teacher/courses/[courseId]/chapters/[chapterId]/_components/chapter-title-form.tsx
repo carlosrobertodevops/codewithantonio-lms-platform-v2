@@ -32,12 +32,16 @@ const titleFormSchema = z.object({
 
 type TitleFormSchemaType = z.infer<typeof titleFormSchema>;
 
-const ChapterTitleForm = ({ initialData, courseId }: ChapterTitleFormProps) => {
+const ChapterTitleForm = ({
+  initialData,
+  courseId,
+  chapterId,
+}: ChapterTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
   const form = useForm<TitleFormSchemaType>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: { title: initialData?.title || '' },
     resolver: zodResolver(titleFormSchema),
   });
@@ -48,8 +52,11 @@ const ChapterTitleForm = ({ initialData, courseId }: ChapterTitleFormProps) => {
 
   const onSubmit = async (values: TitleFormSchemaType) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success('Course is updated');
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}`,
+        values,
+      );
+      toast.success('Chapter is updated');
       toggleIsEditing();
       router.refresh();
     } catch {
@@ -60,7 +67,7 @@ const ChapterTitleForm = ({ initialData, courseId }: ChapterTitleFormProps) => {
   return (
     <div className='mt-6 rounded-md border bg-slate-100 p-4'>
       <div className='flex items-center justify-between font-medium'>
-        Course title
+        Chapter title
         <Button variant={'ghost'} onClick={toggleIsEditing}>
           {isEditing ? (
             'Cancel'
@@ -86,7 +93,7 @@ const ChapterTitleForm = ({ initialData, courseId }: ChapterTitleFormProps) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder='e.g. "Advanced web development"'
+                      placeholder='e.g. "Introduction to the course"'
                       {...field}
                     />
                   </FormControl>
